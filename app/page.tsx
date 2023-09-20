@@ -1,7 +1,7 @@
 'use client'
 
 // import Image from 'next/image'
-import React, {ChangeEvent, useState} from 'react'
+import React, {FormEvent, ChangeEvent, useState} from 'react'
 import { Input, Button, Box } from '@chakra-ui/react';
 
 
@@ -33,7 +33,7 @@ export default function Home() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Here, you can perform validation and submit the data to a server for processing.
     // For simplicity, we'll just set the submittedData state with the form data.
