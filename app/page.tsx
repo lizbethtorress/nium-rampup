@@ -1,71 +1,100 @@
 'use client'
 
 import Image from 'next/image'
-import {useState} from 'react'
-import { Button } from '@chakra-ui/react';
-import { useFormik } from 'formik'
+import React, {useState} from 'react'
+import { Input, Button, Box } from '@chakra-ui/react';
 
 export default function Home() {
-  let count = 0;
 
-  const handleClick = () => {
-    // TODO: update count correctly using state
-    count += 1;
-  }
-  const SignupForm = () => {
-    // Pass the useFormik() hook initial form values and a submit function that will
-    // be called when the form is submitted
-    const formik = useFormik({
-      initialValues: {
-        email: '',
-      },
-      onSubmit: values => {
-        alert(JSON.stringify(values, null, 2));
-      },
+
+
+  const [formData, setFormData] = useState({
+    cardNumber: '',
+    cardHolder: '',
+    expirationDate: '',
+    cvv: '',
+  });
+
+  const [submittedData, setSubmittedData] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-    return (
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="email">Email Address</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
-  
-        <button type="submit">Submit</button>
-      </form>
-    );
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Here, you can perform validation and submit the data to a server for processing.
+    // For simplicity, we'll just set the submittedData state with the form data.
+    setSubmittedData(formData);
+  };
+
+  const starCover = (param) => {
+    // Replace each character in the param with an asterisk
+    return '*'.repeat(param.length);
+  }
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+        {/* ... Logo and other content */}
       </div>
       <div>
         Welcome to the ramp-up!
       </div>
-      <div className="font-bold">
-        Count: {count}
-      </div>
-      {/* 
-      FYI: Chakra UI and TailwindCSS tend to clash sometimes when styling components. 
-      Hopefully it's not an issue with Nium's components, but that's why we specified color with 
-      both class names and the Chakra UI colorScheme prop
-      */}
-      <Button className="bg-sky-600" colorScheme='blue' onClick={SignupForm}>Insert</Button>
-      <div>
-        Hello world
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="font-bold">
+          Credit Card Information:
+        </div>
+        <Input
+          type="text"
+          name="cardNumber"
+          placeholder="Card Number"
+          value={formData.cardNumber}
+          onChange={handleInputChange}
+          required
+        />
+        <Input
+          type="text"
+          name="cardHolder"
+          placeholder="Card Holder"
+          value={formData.cardHolder}
+          onChange={handleInputChange}
+          required
+        />
+        <Input
+          type="text"
+          name="expirationDate"
+          placeholder="Expiration Date"
+          value={formData.expirationDate}
+          onChange={handleInputChange}
+          required
+        />
+        <Input
+          type="password"
+          name="cvv"
+          placeholder="CVV"
+          value={formData.cvv}
+          onChange={handleInputChange}
+          required
+        />
+        <Button type="submit" className="bg-sky-600" colorScheme='blue'>
+          Submit
+        </Button>
+      </form>
+      {submittedData && (
+        <Box mt={4}>
+          <div className="font-bold">Submitted Credit Card Information:</div>
+          <div>Card Number: {submittedData.cardNumber}</div>
+          <div>Card Holder: {submittedData.cardHolder}</div>
+          <div>Expiration Date: {submittedData.expirationDate}</div>
+          <div>CVV: {starCover(submittedData.cvv)}</div>
+        </Box>
+      )}
     </main>
-  )
+  );
 }
