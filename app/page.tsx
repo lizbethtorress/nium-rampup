@@ -3,7 +3,7 @@
 // import Image from 'next/image'
 import React, {FormEvent, ChangeEvent, useState} from 'react'
 import { Input, Button, Box } from '@chakra-ui/react';
-
+import cat from './cat&dog.jpeg';
 
 
 
@@ -50,7 +50,7 @@ export default function Home() {
       <div>
       </div>
       <div>
-        Welcome to the ramp-up!
+        <img src = {cat.src} alt= "Cute Cat"/>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="font-bold">
