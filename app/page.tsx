@@ -1,23 +1,31 @@
 'use client'
 
-import Image from 'next/image'
-import React, {useState} from 'react'
+// import Image from 'next/image'
+import React, {ChangeEvent, useState} from 'react'
 import { Input, Button, Box } from '@chakra-ui/react';
+
+
+
 
 export default function Home() {
 
+  interface FormData {
+    cardNumber: string;
+    cardHolder: string;
+    expirationDate: string;
+    cvv: string;
+  }
 
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     cardNumber: '',
     cardHolder: '',
     expirationDate: '',
     cvv: '',
   });
 
-  const [submittedData, setSubmittedData] = useState(null);
+  const [submittedData, setSubmittedData] = useState<FormData | null>(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -32,8 +40,7 @@ export default function Home() {
     setSubmittedData(formData);
   };
 
-  const starCover = (param) => {
-    // Replace each character in the param with an asterisk
+  const starCover = (param: string) => {
     return '*'.repeat(param.length);
   }
 
@@ -41,7 +48,6 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        {/* ... Logo and other content */}
       </div>
       <div>
         Welcome to the ramp-up!
