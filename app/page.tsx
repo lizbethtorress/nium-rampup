@@ -5,8 +5,6 @@ import React, {FormEvent, ChangeEvent, useState} from 'react'
 import { Input, Button, Box } from '@chakra-ui/react';
 
 
-
-
 export default function Home() {
 
   interface FormData {
@@ -43,7 +41,6 @@ export default function Home() {
   const starCover = (param: string) => {
     return '*'.repeat(param.length);
   }
-
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
