@@ -4,7 +4,9 @@
 import React, {FormEvent, ChangeEvent, useState} from 'react'
 import { Input, Button, Box } from '@chakra-ui/react';
 import cat from './cat&dog.jpeg';
-
+import angry_cat from './angry_cat.jpeg'
+import cat_money from './cat_money.webp'
+import rich_cat from './rich_cat.jpeg'
 
 
 export default function Home() {
@@ -22,6 +24,15 @@ export default function Home() {
     expirationDate: '',
     cvv: '',
   });
+
+  
+
+  const images = [cat, angry_cat, cat_money, rich_cat];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleClick = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
 
   const [submittedData, setSubmittedData] = useState<FormData | null>(null);
 
@@ -46,11 +57,13 @@ export default function Home() {
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-20">
+      <div className="text-2xl font-bold mb-5">Credit Card Stealer</div>
       <div>
+        <img src={images[currentIndex].src} alt={`Image ${currentIndex + 1}`} style={{ height: '400px' }} />
       </div>
       <div>
-        <img src = {cat.src} alt= "Cute Cat"/>
+        <Button type="submit" onClick={handleClick} className="bg-sky-600" colorScheme='blue' >Next Image</Button>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="font-bold">
