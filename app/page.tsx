@@ -3,6 +3,8 @@
 // import Image from 'next/image'
 import React, { FormEvent, ChangeEvent, useState } from "react";
 import { Input, Button, Box } from "@chakra-ui/react";
+import ReactDOM from "react-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
 import cat from "./cat&dog.jpeg";
 import angry_cat from "./angry_cat.jpeg";
 import cat_money from "./cat_money.webp";
@@ -16,40 +18,45 @@ export default function Home() {
     cvv: string;
   }
 
-  const [formData, setFormData] = useState<FormData>({
-    cardNumber: "",
-    cardHolder: "",
-    expirationDate: "",
-    cvv: "",
-  });
+  // const [formData, setFormData] = useState<FormData>({
+  //   cardNumber: "",
+  //   cardHolder: "",
+  //   expirationDate: "",
+  //   cvv: "",
+  // });
+  const { register, handleSubmit } = useForm<FormData>();
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log(data);
+    setSubmittedData(data);
+  };
 
   const [cardNumberError, setCardNumberError] = useState<string | null>(null);
   const [expirationDateError, setExpirationDateError] = useState<string | null>(
     null
   );
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
 
-    // Input validation for card number (allow only integers)
-    if (name === "cardNumber" && !/^\d*$/.test(value)) {
-      setCardNumberError("Card number should only contain digits");
-    } else {
-      setCardNumberError(null);
-    }
+  //   // Input validation for card number (allow only integers)
+  //   if (name === "cardNumber" && !/^\d*$/.test(value)) {
+  //     setCardNumberError("Card number should only contain digits");
+  //   } else {
+  //     setCardNumberError(null);
+  //   }
 
-    // Input validation for expiration date (mm/yy format)
-    // if (name === 'expirationDate' && !/^(0[1-9]|1[0-2])\/\d{2}$/.test(value)) {
-    //   setExpirationDateError('Expiration date should be in mm/yy format (e.g., 05/23)');
-    // } else {
-    //   setExpirationDateError(null);
-    // }
+  //   // Input validation for expiration date (mm/yy format)
+  //   // if (name === 'expirationDate' && !/^(0[1-9]|1[0-2])\/\d{2}$/.test(value)) {
+  //   //   setExpirationDateError('Expiration date should be in mm/yy format (e.g., 05/23)');
+  //   // } else {
+  //   //   setExpirationDateError(null);
+  //   // }
 
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
 
   const images = [cat, angry_cat, cat_money, rich_cat];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -68,12 +75,12 @@ export default function Home() {
   //   });
   // };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Here, you can perform validation and submit the data to a server for processing.
-    // For simplicity, we'll just set the submittedData state with the form data.
-    setSubmittedData(formData);
-  };
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   // Here, you can perform validation and submit the data to a server for processing.
+  //   // For simplicity, we'll just set the submittedData state with the form data.
+  //   setSubmittedData(formData);
+  // };
 
   const starCover = (param: string) => {
     return "*".repeat(param.length);
@@ -99,14 +106,11 @@ export default function Home() {
           Next Image
         </Button>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="font-bold">Credit Card Information:</div>
         <Input
-          type="text"
-          name="cardNumber"
+          {...register("cardNumber")}
           placeholder="Card Number"
-          value={formData.cardNumber}
-          onChange={handleInputChange}
           required
           isInvalid={cardNumberError !== null}
         />
@@ -115,18 +119,13 @@ export default function Home() {
         )}
         <Input
           type="text"
-          name="cardHolder"
+          {...register("cardHolder")}
           placeholder="Card Holder"
-          value={formData.cardHolder}
-          onChange={handleInputChange}
-          required
         />
         <Input
           type="text"
-          name="expirationDate"
+          {...register("expirationDate")}
           placeholder="Expiration Date (mm/yy)"
-          value={formData.expirationDate}
-          onChange={handleInputChange}
           required
           isInvalid={expirationDateError !== null}
         />
@@ -135,10 +134,8 @@ export default function Home() {
         )} */}
         <Input
           type="password"
-          name="cvv"
+          {...register("cvv")}
           placeholder="CVV"
-          value={formData.cvv}
-          onChange={handleInputChange}
           required
         />
         <Button type="submit" className="bg-sky-600" colorScheme="blue">
